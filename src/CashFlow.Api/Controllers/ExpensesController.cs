@@ -1,8 +1,7 @@
 ﻿using CashFlow.Application.UseCases.Expenses.Register;
 using CashFlow.Communication.Requests;
-using Microsoft.AspNetCore.Http;
+using CashFlow.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
 
 namespace CashFlow.Api.Controllers
 {
@@ -21,11 +20,13 @@ namespace CashFlow.Api.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                var errorResponse = new ResponseErrorJson { ErrorMessage = ex.Message };
+                return BadRequest(errorResponse);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "unknown error");
+                var errorResponse = new ResponseErrorJson { ErrorMessage = "Unknown error" };
+                return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
             }
         }
     }
