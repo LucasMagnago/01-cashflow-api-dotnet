@@ -2,6 +2,7 @@
 using CashFlow.Communication.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 
 namespace CashFlow.Api.Controllers
 {
@@ -12,9 +13,20 @@ namespace CashFlow.Api.Controllers
         [HttpPost]
         public IActionResult Register([FromBody] RequestRegisterExpenseJson request)
         {
-            var response = new RegisterExpenseUseCase().Execute(request);
+            try
+            {
+                var response = new RegisterExpenseUseCase().Execute(request);
 
-            return Created();
+                return Created();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "unknown error");
+            }
         }
     }
 }
