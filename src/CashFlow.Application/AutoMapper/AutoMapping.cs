@@ -14,7 +14,8 @@ namespace CashFlow.Application.AutoMapper
     {
         public AutoMapping()
         {
-            
+            RequestToEntity();
+            EntityToResponse();
         }
 
         private void RequestToEntity()
