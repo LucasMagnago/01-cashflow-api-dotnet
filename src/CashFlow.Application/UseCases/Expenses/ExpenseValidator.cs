@@ -1,11 +1,12 @@
 ﻿using CashFlow.Communication.Requests;
 using FluentValidation;
 
-namespace CashFlow.Application.UseCases.Expenses.Register
+namespace CashFlow.Application.UseCases.Expenses
 {
-    public class RegisterExpenseValidator : AbstractValidator<RequestRegisterExpenseJson>
+    public class ExpenseValidator : AbstractValidator<RequestExpenseJson>
     {
-        public RegisterExpenseValidator() {
+        public ExpenseValidator()
+        {
             RuleFor(expense => expense.Title).NotEmpty().WithMessage("The title is required.");
             RuleFor(expense => expense.Amount).GreaterThan(0).WithMessage("The Amount must be greater than zero.");
             RuleFor(expense => expense.Date).LessThanOrEqualTo(DateTime.Now).WithMessage("Expenses cannot be for the future");
