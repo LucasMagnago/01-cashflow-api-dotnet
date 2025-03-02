@@ -28,6 +28,7 @@ namespace CashFlow.Application
             services.AddScoped<IGetExpenseByIdUseCase, GetExpenseByIdUseCase>();
             services.AddScoped<IDeleteExpenseUseCase, DeleteExpenseUseCase>();
             services.AddScoped<IUpdateExpenseUseCase, UpdateExpenseUseCase>();
+            services.AddScoped<IRegisterExpenseUseCase, RegisterExpenseUseCase>();
         }
     }
 }
