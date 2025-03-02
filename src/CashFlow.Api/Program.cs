@@ -2,6 +2,7 @@ using CashFlow.Api;
 using CashFlow.Api.Filters;
 using CashFlow.Infrastructure;
 using CashFlow.Application;
+using CashFlow.Infrastructure.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,4 +32,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+await MigrateDatabase();
+
 app.Run();
+
+async Task MigrateDatabase()
+{
+    // Cria um escopo para ter acesso ao serviço de injeção de dependência
+    await using var scope = app.Services.CreateAsyncScope();
+
+    await DataBaseMigration.MigrateDatabase(scope.ServiceProvider);
+}
