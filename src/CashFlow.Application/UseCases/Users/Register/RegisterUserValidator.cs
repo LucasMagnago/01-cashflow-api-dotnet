@@ -15,6 +15,7 @@ namespace CashFlow.Application.UseCases.Users.Register
                 .NotEmpty()
                 .WithMessage("Email is required")
                 .EmailAddress()
+                .When(user => string.IsNullOrWhiteSpace(user.Email) == false, ApplyConditionTo.CurrentValidator)
                 .WithMessage("Email is invalid");
 
             RuleFor(user => user.Password)
