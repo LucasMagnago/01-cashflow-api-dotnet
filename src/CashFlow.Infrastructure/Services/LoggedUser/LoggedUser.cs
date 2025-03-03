@@ -13,7 +13,7 @@ namespace CashFlow.Infrastructure.Services.LoggedUser
         private readonly CashFlowDbContext _context;
         private readonly ITokenProvider _tokenProvider;
 
-        private LoggedUser(CashFlowDbContext context, ITokenProvider tokenProvider)
+        public LoggedUser(CashFlowDbContext context, ITokenProvider tokenProvider)
         {
             _context = context;
             _tokenProvider = tokenProvider;
