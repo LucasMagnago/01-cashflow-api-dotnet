@@ -9,6 +9,8 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System.Security.Cryptography.Xml;
+using CashFlow.Domain.Security.Tokens;
+using CashFlow.Api.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +54,9 @@ builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)))
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+
+builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
+builder.Services.AddHttpContextAccessor();
 
 var signingKey = builder.Configuration.GetValue<string>("Settings:Jwt:SigningKey");
 
