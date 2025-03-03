@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using CashFlow.Application.UseCases.Expenses.GetById;
 using CashFlow.Application.UseCases.Expenses.Delete;
 using CashFlow.Application.UseCases.Expenses.Update;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -13,6 +14,7 @@ namespace CashFlow.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ExpensesController : ControllerBase
     {
         [HttpPost]
