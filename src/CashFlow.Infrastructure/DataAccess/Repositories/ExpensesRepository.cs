@@ -18,36 +18,37 @@ namespace CashFlow.Infrastructure.DataAccess.Repositories
             await _dbContext.Expenses.AddAsync(expense);
         }
 
-        public async Task<List<Expense>> GetAll()
-        {
-            return await _dbContext.Expenses.AsNoTracking().ToListAsync();
-        }
-
-        async Task<Expense?> IExpensesReadOnlyRepository.GetById(long id)
-        {
-            return await _dbContext.Expenses.AsNoTracking().FirstOrDefaultAsync(expense => expense.Id == id);
-        }
-
-        async Task<Expense?> IExpensesUpdateOnlyRepository.GetById(User user, long id)
-        {
-            return await _dbContext.Expenses.FirstOrDefaultAsync(expense => expense.Id == id && expense.UserId == user.Id);
-        }
-
         public void Update(Expense expense)
         {
             _dbContext.Expenses.Update(expense);
         }
 
-        public async Task<bool> Delete(long id)
+        public async Task Delete(long id)
         {
-            var result = await _dbContext.Expenses.FirstOrDefaultAsync(expense => expense.Id == id);
+            var result = await _dbContext.Expenses.FindAsync(id);
 
-            if (result is null)
-                return false;
+            _dbContext.Expenses.Remove(result!);
+        }
 
-            _dbContext.Expenses.Remove(result);
+        public async Task<List<Expense>> GetAll(User user)
+        {
+            return await _dbContext.Expenses
+                .AsNoTracking()
+                .Where(expense => expense.UserId == user.Id)
+                .ToListAsync();
+        }
 
-            return true;
+        async Task<Expense?> IExpensesReadOnlyRepository.GetById(User user, long id)
+        {
+            return await _dbContext.Expenses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(expense => expense.Id == id && expense.UserId == user.Id);
+        }
+
+        async Task<Expense?> IExpensesUpdateOnlyRepository.GetById(User user, long id)
+        {
+            return await _dbContext.Expenses
+                .FirstOrDefaultAsync(expense => expense.Id == id && expense.UserId == user.Id);
         }
     }
 }
